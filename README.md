@@ -29,7 +29,7 @@ Local development defaults to MySQL host `localhost`, user `root`, an empty pass
 Railway provides a MySQL service that works with this app. Keep the database private within your Railway project; do not commit database credentials.
 
 1. **Create a Railway project and MySQL database.** In Railway, create or open a project, choose **New → Database → MySQL**, and wait until the database service is running.
-2. **Deploy the app from GitHub.** Choose **New → GitHub Repo** and select this repository. The app is in the repository root, so leave the root directory blank. Railway detects the root `Dockerfile` and builds the PHP/Apache web service.
+2. **Deploy the app from GitHub.** Choose **New → GitHub Repo** and select `bhagyaveersinghchauhan-sys/movie-app`. The app is in the repository root, so leave the root directory blank. In the app service's **Settings → Build**, select the **Dockerfile** builder if Railway asks. The root `Dockerfile` tells Railway to build the PHP/Apache web service; this project does not use npm or Composer.
 3. **Connect the app service to MySQL.** Open the app service's **Variables** page and add the following variables. Replace `MySQL` in each reference with the exact name shown on your database service if you renamed it.
 
    | App variable | Value |
@@ -39,9 +39,12 @@ Railway provides a MySQL service that works with this app. Keep the database pri
 
    Add these to the **app service**, not to the MySQL service. Railway references use `${{ ServiceName.VARIABLE }}`. You can instead map the separate `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD` values to the app's `MYSQL_*` variables.
 
-4. **Apply the variables and deploy.** Review and deploy Railway's staged changes. If you change variables later, deploy those changes so they are available to the running app.
-5. **Create the app tables.** Connect a MySQL client to Railway, select the database, and run `database.sql`. The file creates the `users` and `favorites` tables. For a connection from your computer, use Railway's **Settings → Networking** to enable a TCP Proxy and use the public host and port, or use Railway's CLI to connect.
-6. **Open the app.** Use the public domain shown in the app service's **Settings → Networking**. Test registration, login, search, and favorites.
+4. **Set the health check.** In the app service's **Settings → Deploy**, set the health check path to `/health.php`. This endpoint checks that the PHP web server is responding without depending on the database; a database connection problem will still appear on app pages and in runtime logs.
+5. **Apply the variables and deploy.** Review and deploy Railway's staged changes. If you change variables later, deploy those changes so they are available to the running app.
+6. **Create the app tables.** Connect a MySQL client to Railway, select the database, and run `database.sql`. The file creates the `users` and `favorites` tables. For a connection from your computer, use Railway's **Settings → Networking** to enable a TCP Proxy and use the public host and port, or use Railway's CLI to connect.
+7. **Open the app.** In the app service's **Settings → Networking**, generate a public domain. Open it and test registration, login, search, and favorites.
+
+If Railway says multiple package managers were detected, confirm the service is connected to this repository's `main` branch and has a blank root directory. This repository has no `package.json`, `composer.json`, or package lockfiles; choosing the Dockerfile builder avoids package-manager autodetection.
 
 The OMDb key is sent to visitors' browsers because the current app calls OMDb directly; do not reuse a credential that must remain private.
 
