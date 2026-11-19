@@ -1,0 +1,216 @@
+body {
+    background-color: #0f1014;
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* Navbar */
+
+.glass-text-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Safari support */
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    display: inline-block;
+    color: #8a4141;
+}
+
+
+.navbar {
+    background-color: #1a1c24 !important;
+    border-bottom: 1px solid #33374a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.navbar .container-fluid {
+    background-color: transparent !important;
+}
+
+.brand-text {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+}
+
+.brand-text span {
+    color: #0d6efd;
+}
+
+/* Navbar buttons - clearly visible */
+.navbar .btn-outline-light {
+    border-color: #8892a8;
+    color: #c8cdd8;
+    font-weight: 500;
+}
+
+.navbar .btn-outline-light:hover,
+.navbar .btn-outline-light.active {
+    background-color: #3a3f52;
+    border-color: #a0a8be;
+    color: #ffffff;
+}
+
+.navbar .btn-primary {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+}
+
+.navbar .btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.navbar .btn-outline-secondary {
+    border-color: #6b7280;
+    color: #d1d5db;
+    font-weight: 500;
+}
+
+.navbar .btn-outline-secondary:hover {
+    background-color: #374151;
+    border-color: #9ca3af;
+    color: #ffffff;
+}
+
+.navbar .btn-outline-warning {
+    border-color: #f59e0b;
+    color: #fbbf24;
+    font-weight: 500;
+}
+
+.navbar .btn-outline-warning:hover {
+    background-color: rgba(245, 158, 11, 0.15);
+    border-color: #fbbf24;
+    color: #fcd34d;
+}
+
+.navbar .btn-outline-danger {
+    border-color: #ef4444;
+    color: #f87171;
+    font-weight: 500;
+}
+
+.navbar .btn-outline-danger:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: #f87171;
+    color: #fca5a5;
+}
+
+/* Cards & containers */
+.card,
+.form-control,
+.form-select,
+.movie-poster-placeholder,
+.details-poster,
+.genre-card,
+.discovery-toolbar {
+    background-color: #161822;
+    border-color: #272b38;
+    color: #ffffff;
+}
+
+.card {
+    background-color: #1a1d26;
+    border: 1px solid #2a2e3d;
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.card:hover {
+    border-color: #3f4760;
+}
+
+/* Inputs & Selects */
+.form-control,
+.form-select {
+    background-color: #222634;
+    border: 1px solid #32384a;
+    color: #ffffff;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #222634;
+    border-color: #0d6efd;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+/* Posters */
+.movie-poster {
+    height: 310px;
+    object-fit: cover;
+    background-color: #12141a;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.movie-poster-placeholder {
+    height: 310px;
+    background-color: #161822;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #727b93;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.details-poster {
+    max-height: 480px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #12141a;
+    border: 1px solid #2e3344;
+}
+
+/* Genre Cards Grid */
+.genre-card {
+    display: block;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #1e2230;
+    padding: 18px 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #2e3447;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.genre-card:hover {
+    color: #ffffff;
+    background-color: #2a3044;
+    border-color: #0d6efd;
+}
+
+.genre-title {
+    display: block;
+    font-size: 0.95rem;
+}
+
+/* Discovery Toolbar */
+.discovery-toolbar {
+    background-color: #161822;
+    border: 1px solid #272b38;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #242735;
+    background-color: #13141a;
+    color: #8890a4;
+}
