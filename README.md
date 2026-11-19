@@ -53,6 +53,25 @@ The OMDb key is sent to visitors' browsers because the current app calls OMDb di
 
 The included `render.yaml` and Dockerfile can also deploy the app on Render, but Render does not provide a MySQL service for it. Use an external MySQL provider and set the `MYSQL_*` variables in Render's service environment.
 
+#### Render app with Railway MySQL
+
+The Render app cannot use Railway's private `MYSQLHOST`; that hostname is only reachable by services inside the Railway project. To connect these two providers:
+
+1. In the Railway MySQL service, open **Settings → Networking** and enable **Public Networking / TCP Proxy**. Copy the generated public hostname and proxy port. The proxy port may differ from MySQL's internal port `3306`.
+2. In Render, open the app service's **Environment** page and add:
+
+   | Render variable | Value |
+   | --- | --- |
+   | `MYSQL_HOST` | Railway's generated public TCP proxy hostname |
+   | `MYSQL_PORT` | Railway's generated TCP proxy port |
+   | `MYSQL_DATABASE` | Railway's `MYSQLDATABASE` value |
+   | `MYSQL_USER` | Railway's `MYSQLUSER` value |
+   | `MYSQL_PASSWORD` | Railway's `MYSQLPASSWORD` value |
+
+   Enter the values in Render, not Railway variable-reference syntax. Keep the password private. Do not paste the whole `MYSQL_PUBLIC_URL` into `MYSQL_HOST`; use its hostname and port as separate values.
+3. If you have not initialized the tables yet, connect a MySQL client to Railway through the TCP proxy, select the database, and run `database.sql`.
+4. Save the variables and redeploy the Render service.
+
 ## Configuration
 
 | Variable | Local fallback | Railway equivalent | Purpose |
