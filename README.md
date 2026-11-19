@@ -24,51 +24,45 @@ Movya is a PHP movie and TV discovery app. Search titles and browse genres using
 
 Local development defaults to MySQL host `localhost`, user `root`, an empty password, and database `cineverse_db`. To override them, set `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, and `MYSQL_PASSWORD` in the PHP process environment.
 
-## Deploy to Render
+## Deploy to Railway
 
-Render does not provide a built-in MySQL database for this app. Create a reachable MySQL database with a managed database provider first; keep its host, port, database name, username, and password available. Do not put database credentials in Git.
+Railway provides a MySQL service that works with this app. Keep the database private within your Railway project; do not commit database credentials.
 
-1. **Push this project to GitHub.** Create an empty GitHub repository, then from this project directory run:
+1. **Create a Railway project and MySQL database.** In Railway, create or open a project, choose **New → Database → MySQL**, and wait until the database service is running.
+2. **Deploy the app from GitHub.** Choose **New → GitHub Repo** and select this repository. The app is in the repository root, so leave the root directory blank. Railway detects the root `Dockerfile` and builds the PHP/Apache web service.
+3. **Connect the app service to MySQL.** Open the app service's **Variables** page and add the following variables. Replace `MySQL` in each reference with the exact name shown on your database service if you renamed it.
 
-   ```powershell
-   git init
-   git add .
-   git commit -m "Prepare Movya for Render"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-   git push -u origin main
-   ```
-
-   Replace the remote URL with your repository's URL. If this folder is already a Git repository, add the remote and push the existing branch instead of running `git init`.
-
-2. **Create and initialize the hosted database.** Create a database with your provider, connect to it using its dashboard or SQL client, and run the contents of `database.sql` inside the database you created. The SQL file creates the `users` and `favorites` tables; the database itself must already exist.
-3. **Create the Render service.** In Render, choose **New → Blueprint**, connect the GitHub repository, and deploy. Render will use `render.yaml` and the included Dockerfile.
-4. **Set environment variables** for the web service in the Render dashboard:
-
-   | Key | Value |
+   | App variable | Value |
    | --- | --- |
-   | `MYSQL_HOST` | Hostname supplied by your MySQL provider |
-   | `MYSQL_PORT` | Provider's MySQL port, usually `3306` |
-   | `MYSQL_DATABASE` | Database name created with your provider |
-   | `MYSQL_USER` | Database username |
-   | `MYSQL_PASSWORD` | Database password |
+   | `MYSQL_HOST` | `${{ MySQL.MYSQLHOST }}` |
+   | `MYSQL_PORT` | `${{ MySQL.MYSQLPORT }}` |
+   | `MYSQL_DATABASE` | `${{ MySQL.MYSQLDATABASE }}` |
+   | `MYSQL_USER` | `${{ MySQL.MYSQLUSER }}` |
+   | `MYSQL_PASSWORD` | `${{ MySQL.MYSQLPASSWORD }}` |
    | `OMDB_API_KEY` | Your OMDb API key |
 
-   The Blueprint prompts for the `sync: false` values. If you enter database values during Blueprint setup, verify them in the Render service's **Environment** page. The OMDb key is sent to visitors' browsers because the current app calls OMDb directly; do not reuse a credential that must remain private.
-5. **Redeploy** after setting or changing environment variables, then open the `onrender.com` URL shown on the Render service page. Test account registration, login, search, and favorites.
+   Add these to the **app service**, not to the MySQL service. Railway references use `${{ ServiceName.VARIABLE }}`. The app also accepts Railway's native `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD` names.
 
-The included Blueprint uses Render's free web-service plan. Free web services may spin down after inactivity, so the first request can take longer. Database availability, pricing, and network access depend on the MySQL provider; ensure it permits connections from Render.
+4. **Apply the variables and deploy.** Review and deploy Railway's staged changes. If you change variables later, deploy those changes so they are available to the running app.
+5. **Create the app tables.** Connect a MySQL client to Railway, select the database, and run `database.sql`. The file creates the `users` and `favorites` tables. For a connection from your computer, use Railway's **Settings → Networking** to enable a TCP Proxy and use the public host and port, or use Railway's CLI to connect.
+6. **Open the app.** Use the public domain shown in the app service's **Settings → Networking**. Test registration, login, search, and favorites.
+
+The OMDb key is sent to visitors' browsers because the current app calls OMDb directly; do not reuse a credential that must remain private.
+
+### Render alternative
+
+The included `render.yaml` and Dockerfile can also deploy the app on Render, but Render does not provide a MySQL service for it. Use an external MySQL provider and set the `MYSQL_*` variables in Render's service environment.
 
 ## Configuration
 
-| Variable | Local fallback | Purpose |
-| --- | --- | --- |
-| `MYSQL_HOST` | `localhost` | MySQL server hostname |
-| `MYSQL_PORT` | `3306` | MySQL server port |
-| `MYSQL_DATABASE` | `cineverse_db` | Database containing the app tables |
-| `MYSQL_USER` | `root` | Database username |
-| `MYSQL_PASSWORD` | empty | Database password |
-| `OMDB_API_KEY` | `trilogy` | OMDb API key |
+| Variable | Local fallback | Railway equivalent | Purpose |
+| --- | --- | --- | --- |
+| `MYSQL_HOST` | `localhost` | `MYSQLHOST` | MySQL server hostname |
+| `MYSQL_PORT` | `3306` | `MYSQLPORT` | MySQL server port |
+| `MYSQL_DATABASE` | `cineverse_db` | `MYSQLDATABASE` | Database containing the app tables |
+| `MYSQL_USER` | `root` | `MYSQLUSER` | Database username |
+| `MYSQL_PASSWORD` | empty | `MYSQLPASSWORD` | Database password |
+| `OMDB_API_KEY` | `trilogy` | — | OMDb API key |
 
 ## APIs and attribution
 
